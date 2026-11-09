@@ -18,14 +18,14 @@ Companion Magento 2 Extension: **[magento2-mcp-bridge](https://github.com/priyan
 
 ## 🌐 Live Interactive Demonstration
 
-Experience this MCP ecosystem live without installing anything locally:
+Experience this MCP ecosystem live over secure HTTPS without installing anything locally:
 
-* **Interactive MCP Dashboard & Tool Explorer:** [http://152.67.31.72/mcp/](http://152.67.31.72/mcp/)
-* **Live Magento 2 Storefront:** [http://152.67.31.72/](http://152.67.31.72/)
-* **Live Magento 2 Admin Panel:** [http://152.67.31.72/admin/](http://152.67.31.72/admin/)
+* **Interactive MCP Dashboard & Tool Explorer:** [https://152.67.31.72/mcp/](https://152.67.31.72/mcp/)
+* **Live Magento 2 Storefront:** [https://152.67.31.72/](https://152.67.31.72/)
+* **Live Magento 2 Admin Panel:** [https://152.67.31.72/admin/](https://152.67.31.72/admin/)
   * *Username:* `admin`
   * *Password:* `PriyankAdmin123!` (Multi-session enabled)
-* **Live Environment Stack:** Magento 2.4.9, PHP 8.5.4 (OPcache active), MariaDB 11.8, OpenSearch 2.18, Redis 8.0.5.
+* **Live Environment Stack:** Magento 2.4.9, PHP 8.5.4 (OPcache active), MariaDB 11.8, OpenSearch 2.18, Redis 8.0.5, TLS 1.3 / HTTP/2.
 
 ---
 

@@ -1,10 +1,12 @@
 {
-  "name": "magento-mcp",
-  "type": "command",
-  "command": "php /path/to/magento2-mcp-server/bin/magento-mcp-server",
-  "env": {
-    "MAGENTO_BASE_URL": "https://mystore.example.com",
-    "MAGENTO_ACCESS_TOKEN": "YOUR_MAGENTO_INTEGRATION_TOKEN",
-    "MAGENTO_READ_ONLY": "true"
+  "mcpServers": {
+    "magento": {
+      "command": "php",
+      "args": ["/path/to/magento2-mcp-server/bin/magento-mcp-server"],
+      "env": {
+        "MAGENTO_BASE_URL": "https://152.67.31.72",
+        "MAGENTO_ACCESS_TOKEN": "eyJraWQiOiIxIiwiYWxnIjoiSFMyNTYifQ.eyJ1aWQiOjEsInV0eXBpZCI6MiwiaWF0IjoxNzk0MjIwODg5LCJleHAiOjIxMDk1ODA4ODl9.HDdRjCXlF34THOU0Ks86Zkj7svTnbhyt_OGqsuwanTE"
+      }
+    }
   }
 }

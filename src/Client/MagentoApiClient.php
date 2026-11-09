@@ -31,6 +31,12 @@ class MagentoApiClient
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->config->getTimeout());
+        
+        // Support self-signed or direct IP HTTPS connections
+        $sslVerify = filter_var(getenv('MAGENTO_SSL_VERIFY') ?: 'false', FILTER_VALIDATE_BOOLEAN);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $sslVerify);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $sslVerify ? 2 : 0);
+
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
             'Authorization: Bearer ' . $this->config->getAccessToken(),

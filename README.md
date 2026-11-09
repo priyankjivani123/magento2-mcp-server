@@ -1,6 +1,7 @@
 # Magento 2 MCP Server (Model Context Protocol)
 
-[![PHP 8.1 - 8.4 Compatible](https://img.shields.io/badge/PHP-8.1%20%7C%208.2%20%7C%208.3%20%7C%208.4-777BB4.svg?logo=php)](https://www.php.net/)
+[![Magento 2.4.9 Verified](https://img.shields.io/badge/Magento-2.4.9%20Live%20Demo-orange.svg?logo=magento)](http://152.67.31.72/mcp/)
+[![PHP 8.1 - 8.5 Compatible](https://img.shields.io/badge/PHP-8.1%20%7C%208.2%20%7C%208.3%20%7C%208.4%20%7C%208.5-777BB4.svg?logo=php)](https://www.php.net/)
 [![Model Context Protocol](https://img.shields.io/badge/MCP-2024--11--05-blue.svg)](https://modelcontextprotocol.io/)
 [![Claude Desktop Ready](https://img.shields.io/badge/Claude%20Desktop-Compatible-purple.svg)](https://claude.ai/)
 [![Cursor Ready](https://img.shields.io/badge/Cursor-Compatible-black.svg)](https://cursor.com/)
@@ -12,6 +13,19 @@ The official **Magento 2 Model Context Protocol (MCP) Server** developed by **[P
 Connects **Claude Desktop**, **Cursor IDE**, and autonomous AI agents directly to your **Magento 2 / Adobe Commerce** store using standard **JSON-RPC 2.0 over STDIO**. Empower AI assistants to query products, analyze sales orders, monitor inventory, diagnose store performance, audit SEO health, and perform authorized operations safely.
 
 Companion Magento 2 Extension: **[magento2-mcp-bridge](https://github.com/priyankjivani123/magento2-mcp-bridge)**
+
+---
+
+## 🌐 Live Interactive Demonstration
+
+Experience this MCP ecosystem live without installing anything locally:
+
+* **Interactive MCP Dashboard & Tool Explorer:** [http://152.67.31.72/mcp/](http://152.67.31.72/mcp/)
+* **Live Magento 2 Storefront:** [http://152.67.31.72/](http://152.67.31.72/)
+* **Live Magento 2 Admin Panel:** [http://152.67.31.72/admin/](http://152.67.31.72/admin/)
+  * *Username:* `admin`
+  * *Password:* `PriyankAdmin123!` (Multi-session enabled)
+* **Live Environment Stack:** Magento 2.4.9, PHP 8.5.4 (OPcache active), MariaDB 11.8, OpenSearch 2.18, Redis 8.0.5.
 
 ---
 

@@ -1,0 +1,43 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+// Locate Composer autoloader
+$autoloadFiles = [
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../../autoload.php'
+];
+
+$autoloaderFound = false;
+foreach ($autoloadFiles as $file) {
+    if (file_exists($file)) {
+        require_once $file;
+        $autoloaderFound = true;
+        break;
+    }
+}
+
+if (!$autoloaderFound) {
+    // Standalone fallback PSR-4 loader
+    spl_autoload_register(function ($class) {
+        $prefix = 'PriyankJivani\\McpServer\\';
+        if (strpos($class, $prefix) === 0) {
+            $rel = substr($class, strlen($prefix));
+            $file = __DIR__ . '/../src/' . str_replace('\\', '/', $rel) . '.php';
+            if (file_exists($file)) {
+                require_once $file;
+            }
+        }
+    });
+}
+
+use PriyankJivani\McpServer\Server\McpServer;
+use PriyankJivani\McpServer\Transport\StdioTransport;
+use PriyankJivani\McpServer\Config\ServerConfig;
+
+// Initialize Server and Run STDIO Transport
+$config = new ServerConfig();
+$server = new McpServer($config);
+$transport = new StdioTransport($server);
+$transport->run();

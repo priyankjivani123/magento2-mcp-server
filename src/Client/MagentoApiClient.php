@@ -46,7 +46,6 @@ class MagentoApiClient
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $err = curl_error($ch);
-        curl_close($ch);
 
         if ($err) {
             throw new \RuntimeException("Magento API connection failed: $err");
@@ -56,6 +55,13 @@ class MagentoApiClient
         if ($httpCode >= 400) {
             $msg = $decoded['message'] ?? "HTTP $httpCode error from Magento bridge";
             throw new \RuntimeException("Magento Bridge Error ($httpCode): $msg");
+        }
+
+        if (is_array($decoded) && isset($decoded['result']) && is_string($decoded['result'])) {
+            $parsed = json_decode($decoded['result'], true);
+            if ($parsed !== null) {
+                $decoded['result'] = $parsed;
+            }
         }
 
         return is_array($decoded) ? $decoded : ['result' => $response];

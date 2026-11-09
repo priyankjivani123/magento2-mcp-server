@@ -1,223 +1,94 @@
-# Magento 2 MCP Server (Model Context Protocol)
+# Magento 2 Model Context Protocol (MCP) Server
 
-[![Magento 2.4.9 Verified](https://img.shields.io/badge/Magento-2.4.9%20Live%20Demo-orange.svg?logo=magento)](http://152.67.31.72/mcp/)
-[![PHP 8.1 - 8.5 Compatible](https://img.shields.io/badge/PHP-8.1%20%7C%208.2%20%7C%208.3%20%7C%208.4%20%7C%208.5-777BB4.svg?logo=php)](https://www.php.net/)
-[![Model Context Protocol](https://img.shields.io/badge/MCP-2024--11--05-blue.svg)](https://modelcontextprotocol.io/)
-[![Claude Desktop Ready](https://img.shields.io/badge/Claude%20Desktop-Compatible-purple.svg)](https://claude.ai/)
-[![Cursor Ready](https://img.shields.io/badge/Cursor-Compatible-black.svg)](https://cursor.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Upwork](https://img.shields.io/badge/Upwork-Available%20for%20Hire-14a800.svg?logo=upwork)](https://www.upwork.com/freelancers/priyankjivani)
+[![Continuous Integration](https://github.com/priyankjivani123/magento2-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/priyankjivani123/magento2-mcp-server/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![MCP Protocol](https://img.shields.io/badge/MCP%20Protocol-2024--11--05-orange.svg)](https://modelcontextprotocol.io/)
+[![Magento 2](https://img.shields.io/badge/Magento-2.4.9-ff5722.svg)](https://business.adobe.com/products/magento/magento-commerce.html)
+[![PHP Version](https://img.shields.io/badge/PHP-%3E%3D8.1-777bb4.svg)](https://www.php.net/)
+[![Test Pass Rate](https://img.shields.io/badge/Tests-59%2F59%20(100%25)-brightgreen.svg)](QA-REPORT.md)
 
-The official **Magento 2 Model Context Protocol (MCP) Server** developed by **[Priyank Jivani](https://github.com/priyankjivani123)** (Senior Magento 2 Backend Developer & Architect).
+Production-Ready Model Context Protocol (MCP) Server for Magento 2 / Adobe Commerce. Connects Claude Desktop, Cursor AI, and autonomous AI agents directly to Magento stores via standard JSON-RPC 2.0 over STDIO.
 
-Connects **Claude Desktop**, **Cursor IDE**, and autonomous AI agents directly to your **Magento 2 / Adobe Commerce** store using standard **JSON-RPC 2.0 over STDIO**. Empower AI assistants to query products, analyze sales orders, monitor inventory, diagnose store performance, audit SEO health, and perform authorized operations safely.
-
-Companion Magento 2 Extension: **[magento2-mcp-bridge](https://github.com/priyankjivani123/magento2-mcp-bridge)**
-
----
-
-## 🌐 Live Interactive Demonstration
-
-Experience this MCP ecosystem live over secure HTTPS without installing anything locally:
-
-* **Interactive MCP Dashboard & Tool Explorer:** [https://152.67.31.72/mcp/](https://152.67.31.72/mcp/)
-* **Live Magento 2 Storefront:** [https://152.67.31.72/](https://152.67.31.72/)
-* **Live Magento 2 Admin Panel:** [https://152.67.31.72/admin/](https://152.67.31.72/admin/)
-  * *Username:* `admin`
-  * *Password:* `PriyankAdmin123!` (Multi-session enabled)
-* **Live Environment Stack:** Magento 2.4.9, PHP 8.5.4 (OPcache active), MariaDB 11.8, OpenSearch 2.18, Redis 8.0.5, TLS 1.3 / HTTP/2.
+**Author & Lead Architect:** [Priyank Jivani](https://github.com/priyankjivani123)  
+**Live Client Showcase:** [http://152.67.31.72/mcp/](http://152.67.31.72/mcp/)  
+**Public Demo Storefront:** [http://152.67.31.72/](http://152.67.31.72/)  
+**Magento Admin:** [http://152.67.31.72/admin/](http://152.67.31.72/admin/) (`admin` / `PriyankAdmin123!`)
 
 ---
 
-## 🏗 Architecture Overview
+## ⚡ Key Highlights
 
-```
-┌───────────────────────────────────────────────┐
-│              AI Applications                  │
-│       (Claude Desktop, Cursor IDE, etc.)      │
-└───────────────────────┬───────────────────────┘
-                        │
-                        │ JSON-RPC 2.0 (STDIO)
-                        ▼
-┌───────────────────────────────────────────────┐
-│        PriyankJivani_McpServer                │
-│  - Tool Registry (40+ Typed Tools)            │
-│  - Resource Registry (magento://store/...)    │
-│  - Prompt Registry (Diagnose, Audit)          │
-│  - Safe STDIO Transport (Clean stdout)        │
-│  - Read-Only Mode & Confirmation Engine       │
-└───────────────────────┬───────────────────────┘
-                        │
-                        │ HTTPS REST WebAPI (Bearer Token)
-                        ▼
-┌───────────────────────────────────────────────┐
-│        PriyankJivani_McpBridge (Module)       │
-│  - Service Contract Handlers                  │
-│  - Sensitive Path Masking (Secrets/Tokens)    │
-│  - PII Sanitization                           │
-│  - Audit Logger (var/log/mcp_audit.log)       │
-└───────────────────────┬───────────────────────┘
-                        │
-                        ▼
-         Magento 2 / Adobe Commerce Core
-```
+- **39 Enterprise-Grade Tools:** Full coverage across catalog management, order processing, inventory control, customer accounts, category hierarchy, CMS blocks/pages, store configuration, system diagnostics, and SEO audits.
+- **Strict Protocol Compliance:** Compliant with Model Context Protocol specification `2024-11-05` supporting dynamic tool enumeration, resource endpoints (`magento://`), prompt templates, and error schemas.
+- **100% Automated Test Pass Rate:** Verified across 59 automated test cases covering protocol handshakes, functional tool execution, 7 multi-step agentic workflows, penetration testing, and load benchmarking.
+- **Enterprise Security Guardrails:** Granular permission levels (`READ_ONLY`, `WRITE`, `DESTRUCTIVE`), forced `confirm=true` safeguards for entity deletions, `dry_run=true` simulation modes, and automatic credential masking.
+- **Zero Mocking in Production:** Tested directly against live Adobe Commerce / Magento Open Source 2.4.9 running MariaDB 11.8, Redis 8.0, and OpenSearch 2.18.
 
 ---
 
-## ⚡ Quick Start: Setup with Claude Desktop
+## 🚀 Quick Start: Claude Desktop & Cursor Setup
 
-### 1. Clone or Download the MCP Server
-```bash
-git clone https://github.com/priyankjivani123/magento2-mcp-server.git
-cd magento2-mcp-server
-chmod +x bin/magento-mcp-server
-```
-
-### 2. Configure Claude Desktop
-Open your Claude Desktop configuration file:
-* **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-* **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
-* **Linux:** `~/.config/Claude/claude_desktop_config.json`
-
-Add the `magento` server:
+### 1. Claude Desktop Configuration
+Add the following configuration to your `claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
-    "magento": {
+    "magento2": {
       "command": "php",
-      "args": [
-        "/ABSOLUTE/PATH/TO/magento2-mcp-server/bin/magento-mcp-server"
-      ],
+      "args": ["/path/to/magento2-mcp-server/bin/magento-mcp-server"],
       "env": {
-        "MAGENTO_BASE_URL": "https://mystore.example.com",
-        "MAGENTO_ACCESS_TOKEN": "YOUR_MAGENTO_INTEGRATION_TOKEN",
+        "MAGENTO_BASE_URL": "http://152.67.31.72",
+        "MAGENTO_ACCESS_TOKEN": "eyJraWQiOiIxIiwiYWxnIjoiSFMyNTYifQ.eyJ1aWQiOjEsInV0eXBpZCI6MiwiaWF0IjoxNzk0MjIwODg5LCJleHAiOjIxMDk1ODA4ODl9.HDdRjCXlF34THOU0Ks86Zkj7svTnbhyt_OGqsuwanTE",
         "MAGENTO_STORE_CODE": "default",
-        "MAGENTO_READ_ONLY": "true",
-        "MAGENTO_TIMEOUT": "30"
+        "MAGENTO_READ_ONLY": "false"
       }
     }
   }
 }
 ```
 
-Restart Claude Desktop. You will see the **hammer icon 🔨** populated with 20+ Magento tools!
+### 2. Environment Variables Reference
+
+| Variable | Description | Default |
+|---|---|---|
+| `MAGENTO_BASE_URL` | Base URL of the target Magento installation | `http://127.0.0.1` |
+| `MAGENTO_ACCESS_TOKEN` | Admin JWT Bearer Token | `""` |
+| `MAGENTO_STORE_CODE` | Magento store view code | `default` |
+| `MAGENTO_READ_ONLY` | Block all state-mutating and destructive tools | `true` |
+| `MAGENTO_TIMEOUT` | WebAPI connection timeout in seconds | `30` |
+| `MAGENTO_SSL_VERIFY` | Verify SSL certificates (set `false` for self-signed) | `false` |
 
 ---
 
-## ⚡ Setup with Cursor IDE
+## 🛠️ Complete MCP Tool Inventory (39 Tools)
 
-In Cursor Settings > Features > **MCP Servers**:
-* **Name:** `magento`
-* **Type:** `command`
-* **Command:** `php /ABSOLUTE/PATH/TO/magento2-mcp-server/bin/magento-mcp-server`
-* **Environment Variables:**
-  * `MAGENTO_BASE_URL`: `https://mystore.example.com`
-  * `MAGENTO_ACCESS_TOKEN`: `your-integration-token`
-  * `MAGENTO_READ_ONLY`: `true`
+For full parameter schemas, input examples, and descriptions, see [MCP-TOOLS.md](MCP-TOOLS.md).
 
----
-
-## 🛠 Available MCP Tools
-
-### Catalog & Product Management
-* `magento_list_products`: List products with pagination and category filtering.
-* `magento_get_product`: Retrieve product entity details, price, attributes, and stock by SKU.
-* `magento_search_products`: Search products by keyword or name.
-* `magento_update_product_price`: Update regular or special prices (Supports `dry_run=true`).
-* `magento_delete_product`: Permanently delete a product (Requires `confirm=true`).
-
-### Sales & Orders
-* `magento_list_orders`: List orders with pagination and status filters.
-* `magento_get_order`: Retrieve complete order details, line items, and totals.
-* `magento_add_order_comment`: Append internal notes or status history comments.
-
-### Customers
-* `magento_list_customers`: List store customers (PII-sanitized).
-* `magento_get_customer`: Retrieve customer account information by ID.
-
-### Inventory & Stock
-* `magento_get_stock`: Check stock item quantity and salable status.
-* `magento_update_stock`: Update stock quantities on hand.
-
-### Store Configuration
-* `magento_get_store_config`: Retrieve store configuration values. Automatically masks sensitive passwords and tokens.
-
-### Developer Diagnostics & Health
-* `magento_get_version`: Returns Magento edition, PHP version, and bridge status.
-* `magento_get_system_health`: Checks PHP memory limit, OPcache, and disk space.
-* `magento_get_php_information`: Inspects PHP runtime and upload limits.
-* `magento_analyze_performance`: Runs comprehensive Full Page Cache, Varnish, Redis, and database audits.
-
-### SEO Management
-* `magento_get_product_seo`: Evaluates meta titles, descriptions, and keywords.
-* `magento_run_seo_audit`: Generates store-wide SEO health score and recommendations.
+- **Catalog Management (7):** `magento_list_products`, `magento_get_product`, `magento_search_products`, `magento_create_product`, `magento_update_product`, `magento_update_product_price`, `magento_delete_product`.
+- **Order Management (3):** `magento_list_orders`, `magento_get_order`, `magento_add_order_comment`.
+- **Customer Management (3):** `magento_list_customers`, `magento_get_customer`, `magento_create_customer`.
+- **Inventory Control (2):** `magento_get_stock`, `magento_update_stock`.
+- **Category & CMS Hierarchy (7):** `magento_get_category`, `magento_get_category_tree`, `magento_create_category`, `magento_list_cms_pages`, `magento_get_cms_page`, `magento_list_cms_blocks`, `magento_get_cms_block`.
+- **Store Configuration (1):** `magento_get_store_config`.
+- **Developer Diagnostics & Health (13):** `magento_get_version`, `magento_get_system_health`, `magento_get_php_information`, `magento_get_cache_status`, `magento_clean_cache`, `magento_get_indexer_status`, `magento_get_cron_status`, `magento_get_database_health`, `magento_get_opensearch_health`, `magento_get_redis_health`, `magento_get_store_errors`, `magento_list_modules`, `magento_generate_store_report`.
+- **Performance & SEO Intelligence (3):** `magento_analyze_performance`, `magento_get_product_seo`, `magento_run_seo_audit`.
 
 ---
 
-## 📚 MCP Resources & Prompts
+## 📚 Documentation Index
 
-### Resources
-Access live store diagnostics directly:
-* `magento://store/info`
-* `magento://health/overview`
-* `magento://performance/audit`
-
-### Prompts
-Interactive AI prompts available in compatible clients:
-* `diagnose-store-performance`: "Analyze store performance and suggest optimizations."
-* `audit-seo-health`: "Audit catalog products and categories for missing meta tags."
-* `daily-store-standup`: "Generate daily operational summary of pending orders and low stock."
-
----
-
-## 🔒 Security Architecture
-
-1. **Read-Only by Default:** `MAGENTO_READ_ONLY=true` prevents accidental writes.
-2. **Dry-Run Mode:** Pass `dry_run=true` to any mutation tool to preview changes before persisting.
-3. **Destructive Guardrails:** Deleting products requires explicit `confirm=true`.
-4. **Credential Masking:** Never exposes database passwords, admin tokens, or payment credentials.
-5. **Clean STDIO Protocol:** All diagnostic messages go to `stderr`, keeping `stdout` 100% compliant with JSON-RPC 2.0.
-
----
-
-## 🧪 Automated Testing
-
-Run the automated PHPUnit test suite:
-```bash
-vendor/bin/phpunit -c phpunit.xml.dist
-```
-Verified passing with 10 test cases and 35 assertions.
-
----
-
-## 📋 Changelog
-
-Please see [CHANGELOG.md](CHANGELOG.md).
+- [Architecture & Protocol Design](ARCHITECTURE.md)
+- [Complete Tool Catalog & Parameter Schemas](MCP-TOOLS.md)
+- [Comprehensive QA Audit & Test Execution Report](QA-REPORT.md)
+- [Security Audit & Penetration Testing](SECURITY-AUDIT.md)
+- [Performance & Latency Benchmark Report](PERFORMANCE-REPORT.md)
+- [Testing & Test Harness Guide](TESTING.md)
+- [Troubleshooting & FAQ](TROUBLESHOOTING.md)
+- [Changelog & Release Notes](CHANGELOG.md)
 
 ---
 
 ## 📄 License
 
-This software is open-source under the [MIT License](LICENSE).
-
----
-
-## Developing a Magento 2 project?
-
-I help businesses build, customize, optimize and maintain Magento 2 / Adobe Commerce stores.
-
-**Available for:**
-- Magento 2 Custom Development
-- Magento MCP & AI Integrations
-- Magento Extensions
-- Bug Fixes and Troubleshooting
-- Performance Optimization
-- Hyvä Theme Development
-- API Integrations
-- Ongoing Magento Maintenance
-
-**Hire me on Upwork:** [Priyank Jivani Upwork Profile](https://www.upwork.com/freelancers/priyankjivani)  
-**GitHub:** [github.com/priyankjivani123](https://github.com/priyankjivani123)
-
-Contact me for freelance projects and long-term collaborations.
+This project is open-source software licensed under the [MIT License](LICENSE).

@@ -59,6 +59,27 @@ class ToolRegistry
             'limit' => ['type' => 'integer', 'description' => 'Maximum results (default: 20)']
         ], ['query'], 'READ_ONLY');
 
+        $this->add('magento_create_product', 'Create a new catalog product with SKU, name, price, stock, and attributes.', [
+            'sku' => ['type' => 'string', 'description' => 'Unique product SKU'],
+            'name' => ['type' => 'string', 'description' => 'Product name'],
+            'price' => ['type' => 'number', 'description' => 'Base price'],
+            'type_id' => ['type' => 'string', 'description' => 'Product type (simple, virtual)'],
+            'qty' => ['type' => 'number', 'description' => 'Initial inventory quantity'],
+            'status' => ['type' => 'integer', 'description' => '1 = Enabled, 2 = Disabled'],
+            'visibility' => ['type' => 'integer', 'description' => '4 = Catalog & Search'],
+            'dry_run' => ['type' => 'boolean', 'description' => 'Simulate creation without saving']
+        ], ['sku', 'name', 'price'], 'WRITE');
+
+        $this->add('magento_update_product', 'Update core attributes of an existing product (name, description, visibility, status).', [
+            'sku' => ['type' => 'string', 'description' => 'Product SKU'],
+            'name' => ['type' => 'string', 'description' => 'Updated product name'],
+            'price' => ['type' => 'number', 'description' => 'Updated price'],
+            'status' => ['type' => 'integer', 'description' => 'Product status'],
+            'visibility' => ['type' => 'integer', 'description' => 'Product visibility'],
+            'description' => ['type' => 'string', 'description' => 'Updated HTML description'],
+            'dry_run' => ['type' => 'boolean', 'description' => 'Simulate update without saving']
+        ], ['sku'], 'WRITE');
+
         $this->add('magento_update_product_price', 'Update regular or special price for a product. Supports dry_run.', [
             'sku' => ['type' => 'string', 'description' => 'Product SKU'],
             'price' => ['type' => 'number', 'description' => 'New regular price'],
@@ -79,8 +100,9 @@ class ToolRegistry
         ], [], 'READ_ONLY');
 
         $this->add('magento_get_order', 'Get complete sales order details including line items, totals, billing, and status history.', [
-            'increment_id' => ['type' => 'string', 'description' => 'Order increment ID (e.g. 000000042)']
-        ], ['increment_id'], 'READ_ONLY');
+            'increment_id' => ['type' => 'string', 'description' => 'Order increment ID (e.g. 000000042)'],
+            'order_id' => ['type' => 'integer', 'description' => 'Order entity ID']
+        ], [], 'READ_ONLY');
 
         $this->add('magento_add_order_comment', 'Add an internal memo or customer status comment to an order.', [
             'order_id' => ['type' => 'integer', 'description' => 'Order entity ID'],
@@ -99,6 +121,14 @@ class ToolRegistry
             'customer_id' => ['type' => 'integer', 'description' => 'Customer entity ID']
         ], ['customer_id'], 'READ_ONLY');
 
+        $this->add('magento_create_customer', 'Create a new customer account in the store.', [
+            'email' => ['type' => 'string', 'description' => 'Customer email address'],
+            'firstname' => ['type' => 'string', 'description' => 'First name'],
+            'lastname' => ['type' => 'string', 'description' => 'Last name'],
+            'website_id' => ['type' => 'integer', 'description' => 'Website ID (default: 1)'],
+            'dry_run' => ['type' => 'boolean', 'description' => 'Simulate creation without saving']
+        ], ['email', 'firstname', 'lastname'], 'WRITE');
+
         // D. Inventory Management
         $this->add('magento_get_stock', 'Get real-time stock item quantity, salable status, and backorder status.', [
             'sku' => ['type' => 'string', 'description' => 'Product SKU']
@@ -111,14 +141,29 @@ class ToolRegistry
             'dry_run' => ['type' => 'boolean', 'description' => 'Simulate inventory update']
         ], ['sku', 'qty'], 'WRITE');
 
-        // E. Category & CMS
+        // E. Category & CMS Management
         $this->add('magento_get_category', 'Get category details, active status, parent ID, and assigned product count.', [
             'category_id' => ['type' => 'integer', 'description' => 'Category ID']
         ], ['category_id'], 'READ_ONLY');
 
+        $this->add('magento_get_category_tree', 'Get store category hierarchy tree and assigned subcategory breakdown.', [
+            'root_id' => ['type' => 'integer', 'description' => 'Root category ID (default: 2)']
+        ], [], 'READ_ONLY');
+
+        $this->add('magento_create_category', 'Create a new category in the catalog tree.', [
+            'name' => ['type' => 'string', 'description' => 'Category name'],
+            'parent_id' => ['type' => 'integer', 'description' => 'Parent category ID (default: 2)'],
+            'is_active' => ['type' => 'boolean', 'description' => 'Active status (default: true)'],
+            'dry_run' => ['type' => 'boolean', 'description' => 'Simulate category creation']
+        ], ['name'], 'WRITE');
+
+        $this->add('magento_list_cms_pages', 'List all CMS pages with identifiers and published status.', [], [], 'READ_ONLY');
+
         $this->add('magento_get_cms_page', 'Get CMS page content, title, and active status by ID or identifier.', [
             'page_id' => ['type' => 'integer', 'description' => 'CMS Page ID']
         ], ['page_id'], 'READ_ONLY');
+
+        $this->add('magento_list_cms_blocks', 'List all CMS static blocks with identifiers and published status.', [], [], 'READ_ONLY');
 
         $this->add('magento_get_cms_block', 'Get CMS static block content and title by ID or identifier.', [
             'block_id' => ['type' => 'integer', 'description' => 'CMS Block ID']
@@ -133,13 +178,27 @@ class ToolRegistry
         $this->add('magento_get_version', 'Get Magento edition, bridge version, PHP version, and server environment.', [], [], 'READ_ONLY');
         $this->add('magento_get_system_health', 'Get server diagnostics: PHP memory limit, OPcache status, disk space, and health score.', [], [], 'READ_ONLY');
         $this->add('magento_get_php_information', 'Get detailed PHP runtime configuration, extensions count, and upload limits.', [], [], 'READ_ONLY');
-        $this->add('magento_analyze_performance', 'Run comprehensive performance audit across FPC, Varnish, Redis, database, and OPcache.', [], [], 'READ_ONLY');
+        $this->add('magento_get_cache_status', 'Get real-time operational status for all 15 Magento cache types.', [], [], 'READ_ONLY');
+        $this->add('magento_clean_cache', 'Clean or flush Magento cache types (e.g. config, layout, full_page, or ALL). Supports dry_run.', [
+            'types' => ['type' => 'string', 'description' => 'Comma-separated cache codes or empty for ALL'],
+            'dry_run' => ['type' => 'boolean', 'description' => 'Simulate cache clean']
+        ], [], 'WRITE');
+        $this->add('magento_get_indexer_status', 'Get operational status (valid/invalid) and mode for all core indexers.', [], [], 'READ_ONLY');
+        $this->add('magento_get_cron_status', 'Inspect recent scheduled and completed cron execution history from cron_schedule.', [], [], 'READ_ONLY');
+        $this->add('magento_get_database_health', 'Inspect MariaDB database connection, uptime, and table integrity status.', [], [], 'READ_ONLY');
+        $this->add('magento_get_opensearch_health', 'Verify OpenSearch catalog search cluster reachability and version.', [], [], 'READ_ONLY');
+        $this->add('magento_get_redis_health', 'Verify Redis session and backend cache instance latency and memory.', [], [], 'READ_ONLY');
+        $this->add('magento_get_store_errors', 'Retrieve recent error lines from Magento system.log or exception.log.', [
+            'file' => ['type' => 'string', 'description' => 'Log file name (system.log or exception.log)']
+        ], [], 'READ_ONLY');
+        $this->add('magento_list_modules', 'List all installed Magento modules and verify MCP Bridge registration.', [], [], 'READ_ONLY');
+        $this->add('magento_generate_store_report', 'Generate an executive health report summarizing store operational status.', [], [], 'READ_ONLY');
 
-        // H. SEO Management
+        // H. Performance & SEO Management
+        $this->add('magento_analyze_performance', 'Run comprehensive performance audit across FPC, Varnish, Redis, database, and OPcache.', [], [], 'READ_ONLY');
         $this->add('magento_get_product_seo', 'Get product meta title, meta keywords, description length, and canonical health.', [
             'sku' => ['type' => 'string', 'description' => 'Product SKU']
         ], ['sku'], 'READ_ONLY');
-
         $this->add('magento_run_seo_audit', 'Run comprehensive store SEO audit for canonical links, sitemaps, and missing meta tags.', [], [], 'READ_ONLY');
     }
 }

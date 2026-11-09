@@ -20,7 +20,7 @@ class MagentoApiClient
         $payload = [
             'request' => [
                 'action' => $action,
-                'params' => $params,
+                'params' => json_encode($params),
                 'dry_run' => $dryRun,
                 'confirm' => $confirm
             ]
